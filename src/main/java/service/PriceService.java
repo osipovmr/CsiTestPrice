@@ -35,8 +35,8 @@ public class PriceService    {
                                 oldPrice.setEnd(newPrice.getBegin());
                                 lastPrice.setBegin(newPrice.getEnd());
                                 updatedPrices.add(oldPrice);
-                                updatedPrices.add(lastPrice);
                                 updatedPrices.add(newPrice);
+                                updatedPrices.add(lastPrice);
                             } catch (CloneNotSupportedException e) {
                                 e.printStackTrace();
                             }
@@ -50,9 +50,9 @@ public class PriceService    {
                                 Price lastPrice = newPrice.clone();
                                 newPrice.setEnd(oldPrice.getBegin());
                                 lastPrice.setBegin(oldPrice.getEnd());
+                                updatedPrices.add(newPrice);
                                 updatedPrices.add(oldPrice);
                                 updatedPrices.add(lastPrice);
-                                updatedPrices.add(newPrice);
                             } catch (CloneNotSupportedException e) {
                                 e.printStackTrace();
                             }
@@ -63,16 +63,22 @@ public class PriceService    {
                             updatedPrices.add(newPrice);
                         } else {
                             oldPrice.setEnd(newPrice.getBegin());
-                            updatedPrices.add(oldPrice);
+                            if (oldPrice.getBegin().equals(oldPrice.getEnd())) {
+                                updatedPrices.removeIf(price -> price.getValue().equals(oldPrice.getValue()));
+                            }
+                            else if (!(oldPrice.getBegin().equals(oldPrice.getEnd()))) updatedPrices.add(oldPrice);
                             updatedPrices.add(newPrice);
+
                         }
                     } else if (DateComparator.isNewLeft(oldPrice.getBegin(), oldPrice.getEnd(), newPrice.getBegin(), newPrice.getEnd())) {
                         if (newPrice.getValue().equals(oldPrice.getValue())) {
                             oldPrice.setBegin(newPrice.getBegin());
                             updatedPrices.add(oldPrice);
-                        } else {
+                        }
+                        else {
                             oldPrice.setBegin(newPrice.getEnd());
                             updatedPrices.add(oldPrice);
+                            if (!(updatedPrices.contains(newPrice)))
                             updatedPrices.add(newPrice);
                         }
                     }

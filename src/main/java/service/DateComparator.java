@@ -3,23 +3,22 @@ package service;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 
 @FieldDefaults(level = AccessLevel.PUBLIC)
 public class DateComparator {
 
     static boolean isOldContainsNew(LocalDateTime oldPriceBegin, LocalDateTime oldPriceEnd, LocalDateTime newPriceBegin, LocalDateTime newPriceEnd) {
-        boolean check = oldPriceBegin.isBefore(newPriceBegin) && newPriceEnd.isBefore(oldPriceEnd);
+        boolean check = newPriceBegin.isAfter(oldPriceBegin) && newPriceEnd.isBefore(oldPriceEnd);
         return check;
     }
 
     static boolean isNewContainsOld(LocalDateTime oldPriceBegin, LocalDateTime oldPriceEnd, LocalDateTime newPriceBegin, LocalDateTime newPriceEnd) {
-        boolean check = newPriceBegin.isBefore(oldPriceBegin) && newPriceEnd.isAfter(oldPriceEnd);
+        boolean check = oldPriceBegin.isAfter(newPriceBegin) && newPriceEnd.isAfter(oldPriceEnd);
         return check;
     }
 
     static boolean isNewRight(LocalDateTime oldPriceBegin, LocalDateTime oldPriceEnd, LocalDateTime newPriceBegin, LocalDateTime newPriceEnd) {
-        boolean check = oldPriceBegin.isBefore(newPriceBegin) && newPriceBegin.isBefore(oldPriceEnd) && oldPriceEnd.isBefore(newPriceEnd);
+        boolean check = (newPriceBegin.isAfter(oldPriceBegin)||newPriceBegin.equals(oldPriceBegin)) && oldPriceEnd.isAfter(newPriceBegin) && newPriceEnd.isAfter(oldPriceEnd);
         return check;
     }
 
